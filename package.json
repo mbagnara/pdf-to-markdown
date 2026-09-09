@@ -11,6 +11,9 @@
     "test": "vitest run"
   },
   "dependencies": {
+    "dompurify": "^3.4.15",
+    "github-markdown-css": "^5.9.0",
+    "marked": "^18.0.12",
     "pdfjs-dist": "^6.3.289",
     "react": "^19.2.8",
     "react-dom": "^19.2.8"

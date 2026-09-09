@@ -37,6 +37,89 @@
   gap: 20px;
 }
 
+/* Main menu */
+
+.main-menu {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+}
+
+@media (max-width: 700px) {
+  .main-menu {
+    grid-template-columns: 1fr;
+  }
+}
+
+.menu-card {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  text-align: left;
+  padding: 32px 24px;
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  background: var(--bg-subtle);
+  cursor: pointer;
+  color: inherit;
+  font: inherit;
+}
+
+.menu-card:hover,
+.menu-card:focus-visible {
+  border-color: var(--accent);
+  background: var(--accent-bg);
+}
+
+.menu-card:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 4px;
+}
+
+.menu-card-title {
+  font-size: 1.15rem;
+  font-weight: 600;
+  color: var(--text-h);
+}
+
+.menu-card-description {
+  font-size: 0.9rem;
+  color: var(--text);
+}
+
+/* View shell */
+
+.view {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.view-title {
+  font-size: 1.35rem;
+  margin: 0;
+}
+
+.back-link {
+  align-self: flex-start;
+  background: none;
+  border: none;
+  color: var(--text);
+  cursor: pointer;
+  font-size: 0.9rem;
+  padding: 4px 0;
+}
+
+.back-link:hover,
+.back-link:focus-visible {
+  color: var(--accent);
+}
+
+.back-link:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
 /* Dropzone */
 
 .dropzone {
@@ -276,4 +359,56 @@
   min-height: 1.2em;
   font-size: 0.85rem;
   color: var(--accent);
+}
+
+/* Markdown reader */
+
+.markdown-reader {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.markdown-reader-toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.markdown-reader-filename {
+  font-weight: 600;
+  color: var(--text-h);
+  word-break: break-word;
+}
+
+.markdown-reader-toolbar .button-secondary {
+  border: 1px solid var(--border);
+  background: transparent;
+  color: var(--text-h);
+  border-radius: 8px;
+  padding: 10px 16px;
+  cursor: pointer;
+  font-weight: 600;
+  font-size: 0.9rem;
+}
+
+.markdown-reader-toolbar .button-secondary:hover,
+.markdown-reader-toolbar .button-secondary:focus-visible {
+  border-color: var(--accent);
+}
+
+.markdown-preview {
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 32px;
+  background: var(--bg);
+  overflow-x: auto;
+}
+
+@media (max-width: 700px) {
+  .markdown-preview {
+    padding: 20px;
+  }
 }
