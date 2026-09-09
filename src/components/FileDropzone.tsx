@@ -1,11 +1,15 @@
 import { useCallback, useRef, useState, type DragEvent, type KeyboardEvent } from 'react'
-import { MAX_FILE_SIZE_MB } from '../pdf/constants'
 
-interface PdfDropzoneProps {
+interface FileDropzoneProps {
   onFileSelected: (file: File) => void
+  accept: string
+  title: string
+  subtitle: string
+  limitLabel: string
+  ariaLabel: string
 }
 
-export function PdfDropzone({ onFileSelected }: PdfDropzoneProps) {
+export function FileDropzone({ onFileSelected, accept, title, subtitle, limitLabel, ariaLabel }: FileDropzoneProps) {
   const inputRef = useRef<HTMLInputElement>(null)
   const [isDragOver, setIsDragOver] = useState(false)
 
@@ -38,7 +42,7 @@ export function PdfDropzone({ onFileSelected }: PdfDropzoneProps) {
       className={`dropzone${isDragOver ? ' dropzone-active' : ''}`}
       role="button"
       tabIndex={0}
-      aria-label={`Drop a PDF here or press Enter to choose a file. Maximum size ${String(MAX_FILE_SIZE_MB)} megabytes.`}
+      aria-label={ariaLabel}
       onClick={openFileDialog}
       onKeyDown={handleKeyDown}
       onDragOver={(event) => {
@@ -50,13 +54,13 @@ export function PdfDropzone({ onFileSelected }: PdfDropzoneProps) {
       }}
       onDrop={handleDrop}
     >
-      <p className="dropzone-title">Drag and drop a PDF here</p>
-      <p className="dropzone-subtitle">or click to choose a file</p>
-      <p className="dropzone-limit">Maximum size: {MAX_FILE_SIZE_MB} MB</p>
+      <p className="dropzone-title">{title}</p>
+      <p className="dropzone-subtitle">{subtitle}</p>
+      <p className="dropzone-limit">{limitLabel}</p>
       <input
         ref={inputRef}
         type="file"
-        accept="application/pdf,.pdf"
+        accept={accept}
         className="visually-hidden"
         tabIndex={-1}
         aria-hidden="true"

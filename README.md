@@ -1,15 +1,26 @@
-# PDF to Markdown
+# PDF ⇄ Markdown
 
-A small client-only web app that converts a PDF file to Markdown entirely in
-the browser. There is no backend, no database, no authentication, and no
-external service involved: the PDF you select is never uploaded anywhere.
+A small client-only web app with two tools:
+
+- **Convert PDF to Markdown** — turn a PDF into editable Markdown.
+- **Read a Markdown file** — open a `.md` file and preview it rendered,
+  the way it looks on GitHub.
+
+Everything runs entirely in the browser. There is no backend, no database,
+no authentication, and no external service involved: your files are never
+uploaded anywhere.
 
 ## Stack
 
 - React + TypeScript (strict) + Vite
 - Plain CSS (no Tailwind, no component library)
 - [pdfjs-dist](https://www.npmjs.com/package/pdfjs-dist) to read and extract
-  text from the PDF directly in the browser
+  text from a PDF directly in the browser
+- [marked](https://www.npmjs.com/package/marked) to parse Markdown, plus
+  [DOMPurify](https://www.npmjs.com/package/dompurify) to sanitize the
+  resulting HTML before it's ever displayed
+- [github-markdown-css](https://www.npmjs.com/package/github-markdown-css) so
+  the rendered preview matches GitHub's own styling (including dark mode)
 
 ## Install
 
@@ -39,6 +50,8 @@ npm run test
 
 ## How it works
 
+### Convert PDF to Markdown
+
 1. You drop or pick a PDF (up to 50 MB).
 2. The file is read and parsed locally with `pdfjs-dist` (`src/pdf/extractPdf.ts`),
    page by page — the raw bytes never leave your machine.
@@ -57,12 +70,24 @@ npm run test
      line-breaks are repaired
 4. You get an editable Markdown preview you can copy or download as `.md`.
 
+### Read a Markdown file
+
+1. You drop or pick a `.md`/`.markdown`/`.mdx` file (up to 10 MB).
+2. Its text is read locally (`src/markdown/readMarkdownFile.ts`) and parsed
+   to HTML with `marked`, then sanitized with DOMPurify
+   (`src/markdown/renderMarkdown.ts`) — raw `<script>` tags, event handler
+   attributes, and dangerous link/image protocols (like `javascript:`) are
+   stripped before anything reaches the DOM.
+3. The result is displayed using GitHub's own Markdown stylesheet, so
+   headings, bold text, lists, code blocks and blockquotes look the way they
+   do on github.com.
+
 ## Privacy
 
-Everything happens client-side: the PDF, the extracted text, and the
-generated Markdown all stay in your browser's memory for the current tab.
-Nothing is written to `localStorage` or `IndexedDB`, and nothing is ever sent
-to a server.
+Everything happens client-side: any PDF or Markdown file you open, and
+everything derived from it, stays in your browser's memory for the current
+tab. Nothing is written to `localStorage` or `IndexedDB`, and nothing is ever
+sent to a server.
 
 ## Known limitations
 
@@ -82,3 +107,5 @@ to a server.
 - **Reading order** follows the order pdf.js reports text in, which for
   multi-column or heavily designed layouts may not match the visual reading
   order.
+- **The Markdown reader is read-only preview**, not an editor — use the
+  Convert tool if you need an editable Markdown textarea.
