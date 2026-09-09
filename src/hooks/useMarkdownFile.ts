@@ -1,6 +1,5 @@
 import { useCallback, useRef, useState } from 'react'
 import { readMarkdownFile } from '../markdown/readMarkdownFile'
-import { renderMarkdownToSafeHtml } from '../markdown/renderMarkdown'
 
 type MarkdownFileStatus = 'idle' | 'loading' | 'success' | 'error'
 
@@ -8,7 +7,7 @@ interface MarkdownFileState {
   status: MarkdownFileStatus
   fileName: string | null
   fileSizeBytes: number | null
-  html: string
+  rawMarkdown: string
   errorMessage: string | null
 }
 
@@ -16,7 +15,7 @@ const initialState: MarkdownFileState = {
   status: 'idle',
   fileName: null,
   fileSizeBytes: null,
-  html: '',
+  rawMarkdown: '',
   errorMessage: null,
 }
 
@@ -37,12 +36,11 @@ export function useMarkdownFile() {
       try {
         const rawMarkdown = await readMarkdownFile(file)
         if (requestIdRef.current !== requestId) return
-        const html = renderMarkdownToSafeHtml(rawMarkdown)
         setState({
           status: 'success',
           fileName: file.name,
           fileSizeBytes: file.size,
-          html,
+          rawMarkdown,
           errorMessage: null,
         })
       } catch (error) {
@@ -56,5 +54,9 @@ export function useMarkdownFile() {
     })()
   }, [])
 
-  return { state, openFile, reset }
+  const setRawMarkdown = useCallback((rawMarkdown: string) => {
+    setState((prev) => (prev.status === 'success' ? { ...prev, rawMarkdown } : prev))
+  }, [])
+
+  return { state, openFile, reset, setRawMarkdown }
 }

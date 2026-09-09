@@ -5,22 +5,13 @@ import { FileDropzone } from '../components/FileDropzone'
 import { FileSummary } from '../components/FileSummary'
 import { MarkdownEditor } from '../components/MarkdownEditor'
 import { usePdfConversion } from '../hooks/usePdfConversion'
+import { downloadTextFile } from '../markdown/downloadMarkdown'
 import { MAX_FILE_SIZE_MB } from '../pdf/constants'
 
 type CopyStatus = 'idle' | 'copied' | 'failed'
 
 interface ConvertPdfViewProps {
   onBack: () => void
-}
-
-function downloadMarkdown(markdown: string, fileName: string): void {
-  const blob = new Blob([markdown], { type: 'text/markdown;charset=utf-8' })
-  const url = URL.createObjectURL(blob)
-  const anchor = document.createElement('a')
-  anchor.href = url
-  anchor.download = fileName
-  anchor.click()
-  URL.revokeObjectURL(url)
 }
 
 function markdownFileName(pdfFileName: string): string {
@@ -54,7 +45,7 @@ export function ConvertPdfView({ onBack }: ConvertPdfViewProps) {
   }, [state.markdown])
 
   const handleDownload = useCallback(() => {
-    downloadMarkdown(state.markdown, markdownFileName(state.metadata?.fileName ?? 'document.pdf'))
+    downloadTextFile(state.markdown, markdownFileName(state.metadata?.fileName ?? 'document.pdf'))
   }, [state.markdown, state.metadata])
 
   const dropzone = (

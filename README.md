@@ -3,8 +3,8 @@
 A small client-only web app with two tools:
 
 - **Convert PDF to Markdown** — turn a PDF into editable Markdown.
-- **Read a Markdown file** — open a `.md` file and preview it rendered,
-  the way it looks on GitHub.
+- **Read a Markdown file** — open a `.md` file, preview it rendered the way
+  it looks on GitHub, edit it with a live preview, and save your changes.
 
 Everything runs entirely in the browser. There is no backend, no database,
 no authentication, and no external service involved: your files are never
@@ -81,6 +81,11 @@ npm run test
 3. The result is displayed using GitHub's own Markdown stylesheet, so
    headings, bold text, lists, code blocks and blockquotes look the way they
    do on github.com.
+4. Switching to **Edit** shows the raw Markdown next to a live preview that
+   updates as you type. **Download .md** saves your edits as a file (under
+   the original file's name by default) — the browser downloads a new file
+   rather than overwriting the one you opened, since browsers don't allow a
+   web page to silently write back to disk.
 
 ## Privacy
 
@@ -107,5 +112,6 @@ sent to a server.
 - **Reading order** follows the order pdf.js reports text in, which for
   multi-column or heavily designed layouts may not match the visual reading
   order.
-- **The Markdown reader is read-only preview**, not an editor — use the
-  Convert tool if you need an editable Markdown textarea.
+- **Saving downloads a new file; it doesn't overwrite the original.** This
+  is a browser sandboxing constraint, not a choice — a web page can't write
+  to an arbitrary path on disk without the user picking it again each time.
